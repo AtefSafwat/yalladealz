@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const joi = require ('joi')
+joi.ObjectId= require('joi-objectid').ObjectId
 
 EventsSchema = new mongoose.Schema({
     name :{
@@ -9,7 +10,8 @@ EventsSchema = new mongoose.Schema({
         type: String, required:true, lowercase:true
     },
     date:{
-        type:Date
+        type:Date,
+        default:Date.now()
     },
     users:{
         type:[mongoose.Schema.Types.ObjectId],
@@ -24,11 +26,9 @@ function validateEvents (Events){
 
     const schema = {
         name:joi.string().required(),
-        phone:joi.string().required().min(7),
         adress:joi.string().required(),
-        email:joi.required().string().min(8).email(),
-        password:joi.string().required().min(8),
-        role:joi.string().required().valid("admin","Events")
+        date : joi.date()
+
     };
     return joi.validate(Events,schema); 
 }

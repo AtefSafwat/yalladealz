@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 const session = require('express-session');
 
 //routers objects
-
+eventRouter = require('./routes/eventRoute');
 
 const passport = require('passport')
 // creat server express
@@ -16,7 +16,7 @@ app.use(express.json())
 require('./config/passport')(passport)
 // connect databae
 mongoose.connect("mongodb://localhost/yallaDealz")
-.then(()=>console.log("db shipping is connected"))
+.then(()=>console.log("db yalla dealz is connected"))
 .catch(eror=> console.log("error in connection to db"))
 
 //body parser
@@ -38,7 +38,7 @@ app.get('/',(req,res)=>{
     res.send("main page")
 })
 //use route
-
+app.use('/event',eventRouter);
 
 //listen to the port 
 const port = process.env.port ||3000
