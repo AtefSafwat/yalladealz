@@ -1,0 +1,18 @@
+{
+  "name": "yalla-dealz",
+  "version": "1.0.0",
+  "description": "task for interview",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.17.1",
+    "joy": "^0.1.1",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0"
+  }
+}
