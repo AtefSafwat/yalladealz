@@ -13,11 +13,10 @@ EventsSchema = new mongoose.Schema({
         type:Date,
         default:Date.now()
     },
-    users:{
-        type:[mongoose.Schema.Types.ObjectId],
-        ref:"User"
-    }
-
+    users:[
+      { type:mongoose.Schema.Types.ObjectId , ref:'User'}
+    ],
+    RSVP:[{Userid:String, status:Boolean}]
     
 })
 //Events model

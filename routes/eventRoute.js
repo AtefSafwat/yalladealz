@@ -70,7 +70,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // add user to event 
-router.put('/addUser/:id', async (req, res) => {
+router.put('/addUserTo/:id', async (req, res) => {
     //found the event
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) res.status(404).send('the id is not valid')
 
@@ -81,9 +81,24 @@ router.put('/addUser/:id', async (req, res) => {
     eventToEdite.users.push(req.body.id)
     eventToEdite.save() .then(reslut => {
         res.send(reslut);
-    })
+    }).catch(err=> console.log(err));
+    
 })
 
+
+// get all event of users 
+router.get('/eventsof/:userId', async (req, res) => {
+    //check if the id is valid
+    if (!mongoose.Types.ObjectId.isValid(req.params.userId)) res.status(404).send('the id is not valid')
+
+    let users = await Events.find({
+        users:req.params.userId
+    })
+    //check if the user is found or not
+    if (!users) return res.status(400).send("the event is not exist")
+
+    res.send(users)
+})
 
 
 

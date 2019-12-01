@@ -5,7 +5,9 @@ const mongoose = require('mongoose')
 const session = require('express-session');
 
 //routers objects
-eventRouter = require('./routes/eventRoute');
+const eventRouter = require('./routes/eventRoute');
+const userRouter = require('./routes/userRoute');
+
 
 const passport = require('passport')
 // creat server express
@@ -39,6 +41,7 @@ app.get('/',(req,res)=>{
 })
 //use route
 app.use('/event',eventRouter);
+app.use('/user',userRouter);
 
 //listen to the port 
 const port = process.env.port ||3000
