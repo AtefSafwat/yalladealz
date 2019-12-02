@@ -5,9 +5,10 @@ const bcrypt = require('bcryptjs');
 const router = exppress.Router();
 const passport = require('passport')
 
-
+const auth = require('../middleware/auth')
+const adminAuth = require('../middleware/adminAuth')
 // get all events 
-router.get('/', async (req, res) => {
+router.get('/', adminAuth,async (req, res) => {
     //console.log("clients");
     const events = await Events.find();
 
@@ -15,20 +16,20 @@ router.get('/', async (req, res) => {
 
 });
 // get up coming events
-router.get('/upcoming', async (req, res) => {
+router.get('/upcoming', adminAuth, async (req, res) => {
     const events = await Events.find({ date: { '$gt': Date.now() } });
 
     res.send(events);
 })
 
 // get all past  events
-router.get('/past', async (req, res) => {
+router.get('/past', adminAuth, async (req, res) => {
     const events = await Events.find({ date: { '$lt': Date.now() } });
 
     res.send(events);
 })
 // add new event 
-router.post('/addEvent', async (req, res) => {
+router.post('/addEvent', adminAuth, async (req, res) => {
     const { error } = validateEvents(req.body)
     if (error) return res.status(400).send(error.details[0].message + " joi")
 
@@ -50,7 +51,7 @@ router.post('/addEvent', async (req, res) => {
 
 })
 // update the event
-router.put('/:id', async (req, res) => {
+router.put('/:id', adminAuth, async (req, res) => {
     //found the event
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) res.status(404).send('the id is not valid')
 
@@ -70,7 +71,7 @@ router.put('/:id', async (req, res) => {
 })
 
 // add user to event 
-router.put('/addUserTo/:id', async (req, res) => {
+router.put('/addUserTo/:id', adminAuth, async (req, res) => {
     //found the event
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) res.status(404).send('the id is not valid')
 
@@ -105,13 +106,6 @@ router.get('/eventsof/:userId', async (req, res) => {
 /// end
 
 // login
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true
-    })
-        (req, res, next)
-})
+
 // 
 module.exports = router;
