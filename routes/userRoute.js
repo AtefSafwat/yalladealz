@@ -49,7 +49,23 @@ router.delete('/deleteEvent', async (req, res) => {
 
 
 })
+router.post('/accept', async (req, res) => {
+    //check if the id is valid
+    if (!mongoose.Types.ObjectId.isValid(req.body.eventid)) res.status(404).send('the id is not valid')
+    if (!mongoose.Types.ObjectId.isValid(req.body.userid)) res.status(404).send('the id is not valid')
 
+    let eventToEdit = await Events.findById(req.body.eventid)
+    //check if the user is found or not
+    if (!eventToEdit) return res.status(400).send("the event is not exist")
+    var userIndex = eventToEdit.users.indexOf(req.body.userid);
+    if (userIndex < 0) return res.status(400).send("the user is not exist")
+    eventToEdit.RSVP[userIndex].status =true;
+    eventToEdit.save().then(
+        res.send(eventToEdit)
+    ).catch("error in accept  the user event")
+
+
+})
 
 
 // get up coming events
